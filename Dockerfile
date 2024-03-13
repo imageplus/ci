@@ -17,6 +17,8 @@ RUN apk --no-cache add \
     freetype-dev \
     openssl-dev
 
+RUN touch /root/.bashrc
+
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql
 RUN docker-php-ext-install zip
