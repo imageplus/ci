@@ -1,5 +1,8 @@
-# Use the official PHP 8.3 image based on Alpine Linux
-FROM php:8.3-fpm-alpine
+# use Build arg to set image
+ARG PHP_VERSION
+ARG NODE_VERSION
+# Set the base image
+FROM php:${PHP_VERSION}-fpm-alpine
 
 # Install system dependencies
 RUN apk --no-cache add \
@@ -30,7 +33,16 @@ RUN apk --no-cache add libpng-dev libjpeg-turbo-dev freetype-dev \
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Install Node.js
-RUN apk add --no-cache nodejs npm
+# RUN apk add --no-cache nodejs npm
+
+# Install Node.js using NVM
+RUN apk add --no-cache --virtual .build-deps curl \
+    && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash \
+    && source /root/.bashrc \
+    && nvm install ${NODE_VERSION} \
+    && nvm use ${NODE_VERSION} \
+    && apk del .build-deps
+
 
 # Start PHP-FPM
 CMD ["php-fpm"]
