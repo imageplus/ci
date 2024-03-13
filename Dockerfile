@@ -1,8 +1,16 @@
 # use Build arg to set image
 ARG PHP_VERSION
 ARG NODE_VERSION
+
+FROM node:${NODE_VERSION}-alpine as node
 # Set the base image
 FROM php:${PHP_VERSION}-fpm-alpine
+
+COPY --from=node /usr/lib /usr/lib
+COPY --from=node /usr/local/share /usr/local/share
+COPY --from=node /usr/local/lib /usr/local/lib
+COPY --from=node /usr/local/include /usr/local/include
+COPY --from=node /usr/local/bin /usr/local/bin
 
 # Install system dependencies
 RUN apk --no-cache add \
@@ -33,18 +41,6 @@ RUN apk --no-cache add libpng-dev libjpeg-turbo-dev freetype-dev \
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-# Install Node.js
-# RUN apk add --no-cache nodejs npm
-
-# Install Node.js using NVM
-RUN apk add --no-cache --virtual .build-deps curl \
-    && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash \
-    && source /root/.bashrc \
-    && nvm install ${NODE_VERSION} \
-    && nvm use ${NODE_VERSION} \
-    && apk del .build-deps
-
 
 # Start PHP-FPM
 CMD ["php-fpm"]

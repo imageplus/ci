@@ -29,6 +29,7 @@ jobs:
         with:
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/ci:${{ matrix.php-version }}-${{ matrix.node-version }}
+          platforms: linux/amd64,linux/arm64
           build-args: |
             PHP_VERSION=${{ matrix.php-version }}
             NODE_VERSION=${{ matrix.node-version }}
