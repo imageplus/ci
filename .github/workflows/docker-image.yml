@@ -1,6 +1,8 @@
 name: Build Docker Image & Publish to Docker Hub
 
 on:
+  schedule:
+    - cron: '0 0 * * 0'
   push:
     branches: [ "main" ]
 
@@ -13,18 +15,6 @@ jobs:
         php-version: [ '7.4', '8.0', '8.1', '8.2', '8.3' ]
         # Supported Node.js versions
         node-version: [ '12', '14', '16', '18', '20' ]
-        # Exclude unusual combinations of PHP and Node.js versions
-        exclude:
-          - php-version: '7.4'
-            node-version: [ '20' ]
-          - php-version: '8.0'
-            node-version: [ '12' ]
-          - php-version: '8.1'
-            node-version: [ '12' ]
-          - php-version: '8.2'
-            node-version: [ '12' ]
-          - php-version: '8.3'
-            node-version: [ '12', '14' ]
 
     steps:
       - uses: actions/checkout@v4
@@ -47,4 +37,3 @@ jobs:
           build-args: |
             PHP_VERSION=${{ matrix.php-version }}
             NODE_VERSION=${{ matrix.node-version }}
-
