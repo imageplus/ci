@@ -42,5 +42,9 @@ RUN apk --no-cache add libpng-dev libjpeg-turbo-dev freetype-dev \
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+# Increase PHP Memory Limit to system
+RUN cd /usr/local/etc/php/conf.d/ && \
+  echo 'memory_limit = -1' >> /usr/local/etc/php/conf.d/docker-php-ram-limit.ini
+
 # Start PHP-FPM
 CMD ["php-fpm"]
