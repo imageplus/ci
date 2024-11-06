@@ -24,8 +24,7 @@ RUN apk --no-cache add \
     libjpeg-turbo-dev \
     freetype-dev \
     openssl-dev \
-    openssh \
-    libcrypto
+    openssh
 
 RUN touch /root/.bashrc
 
