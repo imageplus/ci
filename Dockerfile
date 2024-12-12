@@ -24,7 +24,8 @@ RUN apk --no-cache add \
     libjpeg-turbo-dev \
     freetype-dev \
     openssl-dev \
-    openssh
+    openssh \
+    icu-dev 
 
 RUN touch /root/.bashrc
 
@@ -33,6 +34,7 @@ RUN docker-php-ext-install pdo_mysql
 RUN docker-php-ext-install zip
 RUN docker-php-ext-install bcmath
 RUN docker-php-ext-install exif
+RUN docker-php-ext-install intl
 RUN apk --no-cache add libsodium-dev && docker-php-ext-install sodium
 
 # Install GD extension
