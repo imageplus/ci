@@ -2,7 +2,7 @@
 ARG PHP_VERSION
 ARG NODE_VERSION
 
-FROM node:${NODE_VERSION}-alpine as node
+FROM node:${NODE_VERSION}-alpine AS node
 # Set the base image
 FROM php:${PHP_VERSION}-fpm-alpine
 
